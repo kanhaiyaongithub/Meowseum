@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "./utils/ThemeContext";
 
 export default function ProfileScreen({ navigation }) {
-  const { darkMode, toggleTheme } = useTheme();
+  const { isDark, toggleTheme, colors } = useTheme();
   const [notifications, setNotifications] = React.useState(true);
 
   const handleLogout = async () => {
@@ -36,72 +36,55 @@ export default function ProfileScreen({ navigation }) {
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: darkMode ? "#121212" : "#e2ecf8" },
-      ]}
-    >
-      {}
-      <View
-        style={[
-          styles.profileCard,
-          { backgroundColor: darkMode ? "#1e1e1e" : "#fff" },
-        ]}
-      >
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={[styles.profileCard, { backgroundColor: colors.card }]}>
         <Image
           source={require("../assets/profile-placeholder.png")}
           style={styles.avatar}
         />
-        <Text style={[styles.name, { color: darkMode ? "#fff" : "#000" }]}>
+        <Text style={[styles.name, { color: colors.text }]}>
           Kanhaiya Choudhary
         </Text>
-        <Text style={[styles.email, { color: darkMode ? "#aaa" : "#666" }]}>
+        <Text style={[styles.email, { color: isDark ? "#aaa" : "#666" }]}>
           iamkanhaiyachoudhary@gmail.com
         </Text>
       </View>
 
-      {/* Settings Section */}
       <View style={styles.settingsSection}>
         <SettingRow
           icon="moon"
           label="Dark Mode"
-          control={<Switch value={darkMode} onValueChange={toggleTheme} />}
-          darkMode={darkMode}
+          control={<Switch value={isDark} onValueChange={toggleTheme} />}
+          colors={colors}
         />
-
         <SettingRow
           icon="notifications"
           label="Notifications"
           control={
             <Switch value={notifications} onValueChange={setNotifications} />
           }
-          darkMode={darkMode}
+          colors={colors}
         />
-
         <SettingRow
           icon="star"
           label="Rate Meowseum"
           onPress={rateApp}
-          darkMode={darkMode}
+          colors={colors}
         />
-
         <SettingRow
           icon="help-circle"
           label="Contact Support"
           onPress={openSupport}
-          darkMode={darkMode}
+          colors={colors}
         />
-
         <SettingRow
           icon="information-circle"
           label="About Meowseum"
           onPress={aboutMeowseum}
-          darkMode={darkMode}
+          colors={colors}
         />
       </View>
 
-      {/* Logout */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
@@ -109,23 +92,15 @@ export default function ProfileScreen({ navigation }) {
   );
 }
 
-function SettingRow({ icon, label, control, onPress, darkMode }) {
+function SettingRow({ icon, label, control, onPress, colors }) {
   const content = (
-    <View
-      style={[styles.row, { backgroundColor: darkMode ? "#2a2a2a" : "#fff" }]}
-    >
+    <View style={[styles.row, { backgroundColor: colors.card }]}>
       <View style={styles.rowLeft}>
-        <Ionicons name={icon} size={20} color={darkMode ? "#fff" : "#333"} />
-        <Text style={[styles.label, { color: darkMode ? "#fff" : "#333" }]}>
-          {label}
-        </Text>
+        <Ionicons name={icon} size={20} color={colors.text} />
+        <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
       </View>
       {control ?? (
-        <Ionicons
-          name="chevron-forward"
-          size={18}
-          color={darkMode ? "#888" : "#ccc"}
-        />
+        <Ionicons name="chevron-forward" size={18} color={colors.text} />
       )}
     </View>
   );

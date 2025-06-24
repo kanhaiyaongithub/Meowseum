@@ -15,7 +15,7 @@ import { useTheme } from "./utils/ThemeContext";
 export default function SavedCatsScreen() {
   const [savedCats, setSavedCats] = useState([]);
   const isFocused = useIsFocused();
-  const { darkMode } = useTheme();
+  const { isDark, colors } = useTheme();
 
   useEffect(() => {
     if (isFocused) loadSavedCats();
@@ -43,27 +43,20 @@ export default function SavedCatsScreen() {
   };
 
   const renderItem = ({ item }) => (
-    <View
-      style={[styles.card, { backgroundColor: darkMode ? "#1c1c1e" : "#fff" }]}
-    >
+    <View style={[styles.card, { backgroundColor: colors.card }]}>
       <Image
         source={{ uri: item.image || "https://placekitten.com/300/300" }}
         style={styles.image}
       />
       <View style={{ flex: 1 }}>
-        <Text style={[styles.name, { color: darkMode ? "#fff" : "#000" }]}>
-          {item.name}
-        </Text>
-        <Text
-          style={[styles.detail, { color: darkMode ? "#aaa" : "#555" }]}
-          numberOfLines={2}
-        >
+        <Text style={[styles.name, { color: colors.text }]}>{item.name}</Text>
+        <Text style={[styles.detail, { color: colors.text }]} numberOfLines={2}>
           {item.temperament}
         </Text>
-        <Text style={[styles.detail, { color: darkMode ? "#aaa" : "#555" }]}>
+        <Text style={[styles.detail, { color: colors.text }]}>
           Origin: {item.origin}
         </Text>
-        <Text style={[styles.detail, { color: darkMode ? "#aaa" : "#555" }]}>
+        <Text style={[styles.detail, { color: colors.text }]}>
           Life Span: {item.life_span} years
         </Text>
 
@@ -78,21 +71,14 @@ export default function SavedCatsScreen() {
   );
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: darkMode ? "#000" : "#e2ecf8" },
-      ]}
-    >
-      <Text style={[styles.header, { color: darkMode ? "#fff" : "#000" }]}>
-        Saved Cats
-      </Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.header, { color: colors.text }]}>Saved Cats</Text>
       <FlatList
         data={savedCats}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         ListEmptyComponent={
-          <Text style={[styles.empty, { color: darkMode ? "#888" : "#666" }]}>
+          <Text style={[styles.empty, { color: isDark ? "#888" : "#666" }]}>
             No cats saved yet.
           </Text>
         }

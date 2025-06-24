@@ -1,4 +1,3 @@
-// utils/catApi.js
 import axios from "axios";
 
 const catApi = axios.create({

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,14 +7,21 @@ import {
   StyleSheet,
   Image,
   Alert,
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LottieView from "lottie-react-native";
 import { useTheme } from "../utils/ThemeContext";
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const animationRef = useRef(null);
   const { darkMode } = useTheme();
+
+  useEffect(() => {
+    animationRef.current?.play();
+  }, []);
 
   const handleLogin = async () => {
     const validUsername = "meow_admin";
@@ -34,12 +41,20 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <View
-      style={[
+    <ScrollView
+      contentContainerStyle={[
         styles.container,
         { backgroundColor: darkMode ? "#000" : "#e2ecf8" },
       ]}
     >
+      <LottieView
+        ref={animationRef}
+        source={require("../../assets/animations/login-animation.json")}
+        autoPlay
+        loop
+        style={styles.animation}
+      />
+
       <Text style={[styles.title, { color: darkMode ? "#fff" : "#000" }]}>
         Meowseum
       </Text>
@@ -75,7 +90,7 @@ export default function LoginScreen({ navigation }) {
               color: darkMode ? "#fff" : "#000",
             },
           ]}
-          placeholder="e.g. meow_admin"
+          placeholder="e.g. meow_man"
           placeholderTextColor={darkMode ? "#888" : "#aaa"}
           value={username}
           onChangeText={setUsername}
@@ -126,20 +141,26 @@ export default function LoginScreen({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingBottom: 40,
+  },
+  animation: {
+    width: 250,
+    height: 250,
+    marginTop: 20,
   },
   title: {
     fontSize: 32,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   card: {
     width: "85%",

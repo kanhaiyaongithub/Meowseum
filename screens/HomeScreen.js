@@ -18,7 +18,7 @@ const itemWidth = (screenWidth - 40) / 2;
 export default function HomeScreen({ navigation }) {
   const [cats, setCats] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { darkMode } = useTheme();
+  const { colors } = useTheme();
 
   const fetchCats = async () => {
     try {
@@ -37,7 +37,7 @@ export default function HomeScreen({ navigation }) {
 
   const renderCat = ({ item }) => (
     <TouchableOpacity
-      style={[styles.card, darkMode && styles.cardDark]}
+      style={[styles.card, { backgroundColor: colors.card }]}
       onPress={() => navigation.navigate("CatDetail", { cat: item })}
     >
       <Image
@@ -46,23 +46,15 @@ export default function HomeScreen({ navigation }) {
         }}
         style={styles.image}
       />
-      <Text
-        style={[styles.name, { color: darkMode ? "#eee" : "#333" }]}
-        numberOfLines={2}
-      >
+      <Text style={[styles.name, { color: colors.text }]} numberOfLines={2}>
         {item.name}
       </Text>
     </TouchableOpacity>
   );
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: darkMode ? "#000" : "#f8f9fc" },
-      ]}
-    >
-      <Text style={[styles.header, { color: darkMode ? "#fff" : "#333" }]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.header, { color: colors.text }]}>
         Discover Cat Breeds
       </Text>
       {loading ? (
@@ -74,6 +66,7 @@ export default function HomeScreen({ navigation }) {
           numColumns={2}
           contentContainerStyle={styles.list}
           renderItem={renderCat}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>
@@ -96,7 +89,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   card: {
-    backgroundColor: "#fff",
     margin: 6,
     width: itemWidth,
     borderRadius: 12,
@@ -107,9 +99,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     paddingBottom: 10,
     alignItems: "center",
-  },
-  cardDark: {
-    backgroundColor: "#1c1c1e",
   },
   image: {
     width: "100%",

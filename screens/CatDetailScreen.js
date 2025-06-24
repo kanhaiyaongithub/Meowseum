@@ -1,4 +1,3 @@
-// screens/CatDetailScreen.js
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -14,7 +13,7 @@ import { useTheme } from "./utils/ThemeContext";
 
 export default function CatDetailScreen({ route, navigation }) {
   const { cat } = route.params;
-  const { darkMode } = useTheme();
+  const { colors } = useTheme();
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
@@ -55,10 +54,7 @@ export default function CatDetailScreen({ route, navigation }) {
 
   return (
     <ScrollView
-      style={[
-        styles.container,
-        { backgroundColor: darkMode ? "#000" : "#f8f9fc" },
-      ]}
+      style={[styles.container, { backgroundColor: colors.background }]}
     >
       <Image
         source={{ uri: cat.image?.url || "https://placekitten.com/400/400" }}
@@ -66,30 +62,35 @@ export default function CatDetailScreen({ route, navigation }) {
       />
 
       <View style={styles.infoContainer}>
-        <Text style={[styles.name, { color: darkMode ? "#fff" : "#000" }]}>
-          {cat.name}
-        </Text>
+        <Text style={[styles.name, { color: colors.text }]}>{cat.name}</Text>
 
         <View style={styles.tags}>
-          <Text style={[styles.tag, { backgroundColor: "#fbd38d" }]}>
+          <Text
+            style={[styles.tag, { backgroundColor: "#fbd38d", color: "#000" }]}
+          >
             {cat.life_span} years
           </Text>
-          <Text style={[styles.tag, { backgroundColor: "#90cdf4" }]}>
+          <Text
+            style={[styles.tag, { backgroundColor: "#90cdf4", color: "#000" }]}
+          >
             {cat.origin}
           </Text>
           <Text
             style={[
               styles.tag,
-              { backgroundColor: darkMode ? "#4a5568" : "#e2e8f0" },
+              {
+                backgroundColor: colors.card,
+                color: colors.text,
+                borderWidth: 1,
+                borderColor: "#ccc",
+              },
             ]}
           >
             {cat.temperament?.split(",")[0] || "Calm"}
           </Text>
         </View>
 
-        <Text
-          style={[styles.description, { color: darkMode ? "#ccc" : "#555" }]}
-        >
+        <Text style={[styles.description, { color: colors.text }]}>
           {cat.description ||
             "This cat breed is known for its charm and elegance. They're affectionate, curious, and love cozy naps in sunbeams."}
         </Text>
@@ -133,15 +134,14 @@ const styles = StyleSheet.create({
   },
   tags: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 8,
     marginBottom: 16,
-    flexWrap: "wrap",
   },
   tag: {
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 12,
-    color: "#000",
     fontSize: 13,
     fontWeight: "600",
   },
